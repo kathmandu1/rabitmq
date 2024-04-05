@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    # image: rabbitmq:3-management-alpine  # Replace with your custom image if applicable
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - RABBITMQ_DEFAULT_USER="${RABBITMQ_DEFAULT_USER}"
+      - RABBITMQ_DEFAULT_PASS="${RABBITMQ_DEFAULT_PASS}"
+    ports:
+      - "5672:5672"  # AMQP port
+      - "15672:15672"  # Management UI port
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq  # Persistent storage for RabbitMQ data
+    networks:
+      - rabitmy-network
+networks:
+    rabitmy-network:
+        driver: bridge
+volumes:
+  rabbitmq-data:  # Define a volume for persistence
