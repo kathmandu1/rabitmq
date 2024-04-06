@@ -92,7 +92,7 @@ jobs:
           script: |
             mkdir -p ~/.ssh/
             ssh-keyscan -H ${{ secrets.AWS_EC2_HOST }} >> ~/.ssh/known_hosts
-            git pull origin main
+            # git pull origin main
         #   script: |
         #     ssh-keyscan -H ${{ secrets.AWS_EC2_HOST }} >> ~/.ssh/known_hosts
         #     ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.AWS_EC2_HOST }} "cd /home/ubuntu/rabbitmq && git pull origin main" 
@@ -103,6 +103,7 @@ jobs:
       - name: Deploy with Docker Compose
         run: |
           docker ps
-        #   git pull origin main
+          git pull origin main
+          echo ls
         #   cd rabitmq
         #   docker-compose up -d
