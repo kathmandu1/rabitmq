@@ -89,9 +89,13 @@ jobs:
           host: ${{ secrets.AWS_EC2_HOST }}
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /rabitmq
+            git pull origin main
+            docker-compose up -d
 
-      - name: Deploy with Docker Compose
-        run: |
-          git pull origin main
-          cd rabitmq
-          docker-compose up -d
+    #   - name: Deploy with Docker Compose
+    #     run: |
+    #       git pull origin main
+    #       cd rabitmq
+    #       docker-compose up -d
