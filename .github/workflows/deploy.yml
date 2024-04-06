@@ -90,11 +90,17 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            mkdir -p ~/.ssh/
+            # echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+            # chmod 600 ~/.ssh/id_rsa
             ssh-keyscan -H ${{ secrets.AWS_EC2_HOST }} >> ~/.ssh/known_hosts
-            ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.AWS_EC2_HOST }} "cd /home/ubuntu/rabbitmq && git pull origin main" 
-            # cd rabitmq
-            # git pull origin main
-            # docker compose up -d
+            cd /home/ubuntu/rabbitmq && git pull origin main
+        #   script: |
+        #     ssh-keyscan -H ${{ secrets.AWS_EC2_HOST }} >> ~/.ssh/known_hosts
+        #     ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.AWS_EC2_HOST }} "cd /home/ubuntu/rabbitmq && git pull origin main" 
+        #     # cd rabitmq
+        #     # git pull origin main
+        #     # docker compose up -d
 
       - name: Deploy with Docker Compose
         run: |
