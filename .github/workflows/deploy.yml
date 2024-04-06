@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest  # Workflow runs on Ubuntu virtual runner
 
     steps:
-      - uses: actions/checkout@v3  # Checkout code from the Git repository
+    #   - uses: actions/checkout@v3  # Checkout code from the Git repository
 
     #   - name: Login to Docker Hub (optional)  # Login to Docker Hub if pushing images
     #     uses: docker/login-action@v2
