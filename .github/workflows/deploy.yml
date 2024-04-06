@@ -1,0 +1,66 @@
+name: CI/CD with EC2 Docker & Migrations
+
+on:
+  push:
+    branches: [ main ]  # Trigger on pushes to the main branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest  # Workflow runs on Ubuntu virtual runner
+
+    steps:
+      - uses: actions/checkout@v3  # Checkout code from the Git repository
+
+    #   - name: Login to Docker Hub (optional)  # Login to Docker Hub if pushing images
+    #     uses: docker/login-action@v2
+    #     with:
+    #       username: ${{ secrets.DOCKER_USERNAME }}
+    #       password: ${{ secrets.DOCKER_PASSWORD }}
+
+    #   - name: Build Docker image (replace with your build command)
+    #     run: docker build -t your_app_image .  # Replace 'your_app_image' with your actual image name
+      - name: Build Docker image (replace with your build command)
+        run: docker compose  build
+
+      - name: Push Docker image to registry (optional)  # Push image to registry if using
+        run: docker push your_app_image  # Replace with your actual image push command
+
+      - name: Install AWS CLI  # Install the AWS CLI for interacting with AWS services
+        uses: aws/aws-cli@v2
+        with:
+          aws-version: '2.28.0'  # Specify AWS CLI version (optional)
+          region: 'us-east-1'  # Replace with your desired AWS region
+
+      - name: Configure AWS credentials  # Configure AWS credentials for the workflow
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_KEY }}
+          aws configure set region ap-south-1  # Set the region from the workflow variable
+        #   aws configure set region $REGION  # Set the region from the workflow variable
+          
+
+      - name: SSH into EC2 (replace with your connection details)
+        uses: ssh-action@v3
+        with:
+          host: ${{ secrets.AWS_EC2_HOST }}
+          username: ubuntu  # Adjust username based on your EC2 setup
+          privateKey: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: '60s'  # Set a timeout for SSH connection
+
+    #   - name: Pull latest Docker images  # Pull latest images on EC2 instance
+    #     run: |
+    #       docker-compose pull
+
+      - name: Down and recreate services (optional, adjust for your deployment strategy)
+        run: |
+          docker compose down
+          docker compose up -d
+
+      - name: Run database migrations (replace with your migration command)
+        run: |
+            docker compose  exec ap sh
+        #   cd /var/www/app  # Adjust path to your application directory on EC2
+          # Replace 'migrate' with your actual migration command (e.g., npm run migrate)
+        #   ./migrate
+            # php artisan migrate
+
