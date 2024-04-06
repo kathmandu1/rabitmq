@@ -9,21 +9,14 @@ jobs:
     runs-on: ubuntu-latest  # Workflow runs on Ubuntu virtual runner
 
     steps:
-    #   - uses: actions/checkout@v3  # Checkout code from the Git repository
+        
+      - uses: actions/checkout@v3  # Checkout code from the Git repository
 
-    #   - name: Login to Docker Hub (optional)  # Login to Docker Hub if pushing images
-    #     uses: docker/login-action@v2
-    #     with:
-    #       username: ${{ secrets.DOCKER_USERNAME }}
-    #       password: ${{ secrets.DOCKER_PASSWORD }}
-
-    #   - name: Build Docker image (replace with your build command)
-    #     run: docker build -t your_app_image .  # Replace 'your_app_image' with your actual image name
-      - name: Build Docker image (replace with your build command)
+      - name:  Build and start containers
         run: docker compose  build
 
-      - name: Push Docker image to registry (optional)  # Push image to registry if using
-        run: docker push your_app_image  # Replace with your actual image push command
+    #   - name: Push Docker image to registry (optional)  # Push image to registry if using
+    #     run: docker push your_app_image  # Replace with your actual image push command
 
       - name: Install AWS CLI  # Install the AWS CLI for interacting with AWS services
         uses: aws/aws-cli@v2
