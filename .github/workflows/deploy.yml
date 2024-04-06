@@ -90,7 +90,9 @@ jobs:
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd rabitmq
+            ssh-keyscan -H ${{ secrets.AWS_EC2_HOST }} >> ~/.ssh/known_hosts
+            ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_USERNAME }} "cd /rabitmq && git pull origin main"
+            # cd rabitmq
             # git pull origin main
             # docker compose up -d
 
