@@ -9,11 +9,13 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER
       - RABBITMQ_DEFAULT_PASS
+      - RABBITMQ_CONFIG_FILE
     ports:
       - "5672:5672"  # AMQP port
       - "15672:15672"  # Management UI port
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq  # Persistent storage for RabbitMQ data
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
     networks:
       - rabitmy-network
 networks:
